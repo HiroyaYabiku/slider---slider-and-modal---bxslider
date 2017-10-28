@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
+  <title>スライダーとモーダル（ポップアップ）を併用</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
@@ -188,9 +188,6 @@
     </ul>
   </div><!-- sliderModalWrap -->
 
-
-
-
 <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.bxslider.js"></script>
 <script type="text/javascript">
@@ -229,30 +226,28 @@ $(function() {
 
 
 
-
-    // sliderModal 設定
-    var SliderModalInit = function(arr){
-      SliderModalInit.prototype.inheritance = function(arr){
-        var el = $(arr.el).bxSlider({
+    // Modal内のslider設定
+    var SliderModalInit = function(){
+      SliderModalInit.prototype.inheritance = function(sliderModalSet){
+        var el = $(sliderModalSet.el).bxSlider({
           auto: false,
-          mode: arr.mode,
+          mode: sliderModalSet.mode,
           slideWidth: 300
         });
-        console.log(arr.mode)
-        var $sliderEl = $(arr.sliderModaleEl);
+        var $sliderEl = $(sliderModalSet.sliderModaleEl);
         var $sliderModalBk = $('#js-sliderModalBk');
-        var $sliderModal = $(arr.sliderModaleWrap);
-        var $sliderMode = $(arr.mode);
+        var $sliderModal = $(sliderModalSet.sliderModaleWrap);
+        var $sliderMode = $(sliderModalSet.mode);
         var $winHWidth = $(window).width();
-        var $winHeight = $(document).height();
+        var $docHeight = $(document).height();
 
-        $sliderEl.on('click', function(arr){
+        $sliderEl.on('click', function(){
           var $slideIndexSelected = parseInt($(this).prop('href').substr(-1,1)) - 1;
           $sliderModalBk.fadeIn();
           $sliderModal.fadeIn();
           el.reloadSlider({
-            mode: arr.mode,
-            speed: 150,
+            mode: sliderModalSet.mode,
+            speed: sliderModalSet.speed,
             pager: false,
             touchEnabled: false,
             startSlide: $slideIndexSelected
@@ -260,22 +255,22 @@ $(function() {
           // modalの背景設定
           var sample = $sliderModalBk.css({
             width: $winHWidth,
-            height: $winHeight
+            height: $docHeight
           });
           return false;
         });
 
         $(window).on('load resize', function(){
           var $winHWidth = $(window).width();
-          var $winHeight = $(document).height();
+          var $docHeight = $(document).height();
           $sliderModalBk.css({
             width: $winHWidth,
-            height: $winHeight
+            height: $docHeight
           });
         });
 
         $sliderModalBk.on('click', function(){
-          var fadeOutSpeed = 1300;
+          var fadeOutSpeed = 500;
           $sliderModal.fadeOut(function(){
             $sliderModalBk.fadeOut(fadeOutSpeed,'swing');
           });
@@ -283,22 +278,35 @@ $(function() {
       }
     };
 
-    // フェード インスタンス
-    var sliderModal1 = new SliderModalInit();
-    var arr = {
+    // slider1の設定（フェード）
+    var sliderModalSet1 = {
       el: '.sliderModal',
       sliderModaleEl: '.slider li a',
       sliderModaleWrap: '.sliderModalWrap',
-      mode: 'fade'
+      mode: 'fade',
+      speed: 400,
     }
-    sliderModal1.inheritance(arr);
-    console.log(arr.mode)
 
-    // スライド インスタンス
+    // slider2の設定（スライド）
+    var sliderModalSet2 = {
+      el: '.sliderModal2',
+      sliderModaleEl: '.slider2 li a',
+      sliderModaleWrap: '.sliderModalWrap2',
+      mode: 'horizontal',
+      speed: 500,
+    }
+
+    // slider1をインスタンス生成
+    var sliderModal1 = new SliderModalInit();
+    sliderModal1.inheritance(sliderModalSet1);
+
+    // slider2をインスタンス生成
     var sliderModal2 = new SliderModalInit();
-    sliderModal2.inheritance('.sliderModal2','.slider2 li a','.sliderModalWrap2','horizontal');
+    sliderModal2.inheritance(sliderModalSet2);
 
 });
+
+
 
 </script>
 </body>
