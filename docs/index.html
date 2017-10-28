@@ -1,0 +1,305 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/jquery.bxslider.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+
+<style media="screen">
+.sliderWrap {
+  position: relative;
+  max-width: 930px;
+  margin: 0 auto 130px;
+}
+.slider li {
+  width: 160px;
+}
+.bx-wrapper {
+  max-width: 100% !important;
+  margin: 0 15px;
+}
+.bx-wrapper .bx-prev,
+.bx-wrapper .bx-next {
+  color: #fff;
+}
+
+/* カウンター
+--------------------------- */
+.slide-counter,
+.slide-counter2 {
+  position: absolute;
+  left: 100px;
+  bottom: -30px;
+}
+/* モーダル
+--------------------------- */
+#js-sliderModalBk {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.5);
+}
+.sliderModalWrap,
+.sliderModalWrap2 {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: 700px;
+  height: 427px;
+  margin: auto;
+}
+.sliderModal {
+  position: relative;
+  margin-bottom: 30px;
+}
+.sliderModal li,
+.sliderModal2 li {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 427px;
+  background: #fff;
+}
+.sliderModal li.active {
+  z-index: 1;
+}
+.sliderModal__contents {
+  position: absolute;
+  top: 100px;
+  right: 150px;
+}
+.sliderModal__btn {
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  bottom: 20px;
+}
+.sliderModal__prev,
+.sliderModal__next {
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.sliderModal .modal-active {
+  display: block !important;
+  z-index: 100 !important;
+}
+
+</style>
+</head>
+
+
+
+<body>
+  <div id="js-sliderModalBk"></div><!-- sliderModalBk -->
+
+
+  <!-- slider 1 -->
+  <div class="sliderWrap">
+    <ul class="slider">
+      <li><a href="#slider1"><img src="img/01.jpg"></a></li>
+      <li><a href="#slider2"><img src="img/02.jpg"></a></li>
+      <li><a href="#slider3"><img src="img/03.jpg"></a></li>
+    </ul>
+    <div class="slide-counter slide-total"><span></span> / </div>
+  </div><!-- sliderWrap -->
+
+  <div class="sliderModalWrap">
+    <ul class="sliderModal">
+      <li>
+        <img src="img/01.jpg">
+        <div class="sliderModal__contents">
+          contents1
+        </div><!-- sliderModal__contents -->
+      </li>
+      <li>
+        <img src="img/02.jpg">
+        <div class="sliderModal__contents">
+          contents2
+        </div><!-- sliderModal__contents -->
+      </li>
+      <li>
+        <img src="img/03.jpg">
+        <div class="sliderModal__contents">
+          contents3
+        </div><!-- sliderModal__contents -->
+      </li>
+    </ul>
+  </div><!-- sliderModalWrap -->
+
+
+
+
+  <!-- slider 2 -->
+  <div class="sliderWrap">
+    <ul class="slider2">
+      <li><a href="#slider1"><img src="img/01.jpg"></a></li>
+      <li><a href="#slider2"><img src="img/02.jpg"></a></li>
+      <li><a href="#slider3"><img src="img/03.jpg"></a></li>
+      <li><a href="#slider4"><img src="img/03.jpg"></a></li>
+    </ul>
+    <div class="slide-counter2 slide-total2"><span></span> / </div>
+  </div><!-- sliderWrap -->
+
+  <div class="sliderModalWrap2">
+    <ul class="sliderModal2">
+      <li>
+        <img src="img/01.jpg">
+        <div class="sliderModal__contents">
+          contents4
+        </div><!-- sliderModal__contents -->
+      </li>
+      <li>
+        <img src="img/02.jpg">
+        <div class="sliderModal__contents">
+          contents5
+        </div><!-- sliderModal__contents -->
+      </li>
+      <li>
+        <img src="img/03.jpg">
+        <div class="sliderModal__contents">
+          contents6
+        </div><!-- sliderModal__contents -->
+      </li>
+      <li>
+        <img src="img/03.jpg">
+        <div class="sliderModal__contents">
+          contents7
+        </div><!-- sliderModal__contents -->
+      </li>
+    </ul>
+  </div><!-- sliderModalWrap -->
+
+
+
+
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.bxslider.js"></script>
+<script type="text/javascript">
+
+
+$(function() {
+
+    // slider設定
+    var SliderInit = function(){
+      SliderInit.prototype.inheritance = function(el,total,count){
+        var el = $(el).bxSlider({
+          auto: true,
+          slideWidth: 300,
+          slideMargin: 15,
+          maxSlides: 3,
+        	minSlides: 3,
+        	moveSlides:1,
+          // prevText: '', //前へのテキスト
+          // nextText: '', //次へのテキスト
+          onSliderLoad: function(currentIndex) {
+            $(count).text(currentIndex + 1);
+          },
+          onSlideBefore: function($slideElement, oldIndex, newIndex) {
+            $(count).text(newIndex + 1);
+          }
+        });
+        $(total).append(el.getSlideCount());
+      };
+    };
+    var slider1 = new SliderInit();
+    slider1.inheritance('.slider','.slide-counter','.slide-counter span');
+
+    var slider2 = new SliderInit();
+    slider2.inheritance('.slider2','.slide-counter2','.slide-counter2 span');
+
+
+
+
+
+    // sliderModal 設定
+    var SliderModalInit = function(arr){
+      SliderModalInit.prototype.inheritance = function(arr){
+        var el = $(arr.el).bxSlider({
+          auto: false,
+          mode: arr.mode,
+          slideWidth: 300
+        });
+        console.log(arr.mode)
+        var $sliderEl = $(arr.sliderModaleEl);
+        var $sliderModalBk = $('#js-sliderModalBk');
+        var $sliderModal = $(arr.sliderModaleWrap);
+        var $sliderMode = $(arr.mode);
+        var $winHWidth = $(window).width();
+        var $winHeight = $(document).height();
+
+        $sliderEl.on('click', function(arr){
+          var $slideIndexSelected = parseInt($(this).prop('href').substr(-1,1)) - 1;
+          $sliderModalBk.fadeIn();
+          $sliderModal.fadeIn();
+          el.reloadSlider({
+            mode: arr.mode,
+            speed: 150,
+            pager: false,
+            touchEnabled: false,
+            startSlide: $slideIndexSelected
+          });
+          // modalの背景設定
+          var sample = $sliderModalBk.css({
+            width: $winHWidth,
+            height: $winHeight
+          });
+          return false;
+        });
+
+        $(window).on('load resize', function(){
+          var $winHWidth = $(window).width();
+          var $winHeight = $(document).height();
+          $sliderModalBk.css({
+            width: $winHWidth,
+            height: $winHeight
+          });
+        });
+
+        $sliderModalBk.on('click', function(){
+          var fadeOutSpeed = 1300;
+          $sliderModal.fadeOut(function(){
+            $sliderModalBk.fadeOut(fadeOutSpeed,'swing');
+          });
+        });
+      }
+    };
+
+    // フェード インスタンス
+    var sliderModal1 = new SliderModalInit();
+    var arr = {
+      el: '.sliderModal',
+      sliderModaleEl: '.slider li a',
+      sliderModaleWrap: '.sliderModalWrap',
+      mode: 'fade'
+    }
+    sliderModal1.inheritance(arr);
+    console.log(arr.mode)
+
+    // スライド インスタンス
+    var sliderModal2 = new SliderModalInit();
+    sliderModal2.inheritance('.sliderModal2','.slider2 li a','.sliderModalWrap2','horizontal');
+
+});
+
+</script>
+</body>
+</html>
