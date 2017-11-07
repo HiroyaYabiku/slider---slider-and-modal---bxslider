@@ -36,8 +36,7 @@
 
 /* カウンター
 --------------------------- */
-.slide-counter,
-.slide-counter2 {
+.slide-counter {
   position: absolute;
   left: 100px;
   bottom: -30px;
@@ -52,8 +51,7 @@
   left: 0;
   background: rgba(0,0,0,0.5);
 }
-.sliderModalWrap,
-.sliderModalWrap2 {
+.sliderModalWrap {
   display: none;
   position: fixed;
   z-index: 3;
@@ -69,8 +67,7 @@
   position: relative;
   margin-bottom: 30px;
 }
-.sliderModal li,
-.sliderModal2 li {
+.sliderModal li {
   position: absolute;
   top: 0;
   left: 0;
@@ -116,6 +113,7 @@
   border-left: 7px solid #008FA8;
 }
 
+
 </style>
 </head>
 
@@ -131,16 +129,16 @@
 
   <!-- slider 1 -->
   <div class="sliderWrap">
-    <ul class="slider">
+    <ul class="slider1 slider">
       <li><a href="#slider1"><img src="img/01.jpg"></a></li>
       <li><a href="#slider2"><img src="img/02.jpg"></a></li>
       <li><a href="#slider3"><img src="img/03.jpg"></a></li>
     </ul>
-    <div class="slide-counter"><span></span> / </div>
+    <div class="slide-counter1 slide-counter"><span></span> / </div>
   </div><!-- sliderWrap -->
 
-  <div class="sliderModalWrap">
-    <ul class="sliderModal">
+  <div class="sliderModalWrap1 sliderModalWrap">
+    <ul class="sliderModal1 sliderModal">
       <li>
         <img src="img/01.jpg">
         <div class="sliderModal__contents">
@@ -170,17 +168,17 @@
 
   <!-- slider 2 -->
   <div class="sliderWrap">
-    <ul class="slider2">
+    <ul class="slider2 slider">
       <li><a href="#slider1"><img src="img/04.jpg"></a></li>
       <li><a href="#slider2"><img src="img/05.jpg"></a></li>
       <li><a href="#slider3"><img src="img/06.jpg"></a></li>
       <li><a href="#slider4"><img src="img/07.jpg"></a></li>
     </ul>
-    <div class="slide-counter2"><span></span> / </div>
+    <div class="slide-counter2 slide-counter"><span></span> / </div>
   </div><!-- sliderWrap -->
 
-  <div class="sliderModalWrap2">
-    <ul class="sliderModal2">
+  <div class="sliderModalWrap2 sliderModalWrap">
+    <ul class="sliderModal2 sliderModal">
       <li>
         <img src="img/04.jpg">
         <div class="sliderModal__contents">
@@ -208,6 +206,7 @@
     </ul>
   </div><!-- sliderModalWrap -->
 
+
   <!-- ///////////////////////////////////////////////////////////////// -->
 
 
@@ -217,6 +216,7 @@
 
 
 $(function() {
+
 
     // slider設定
     var SliderInit = function(el,total,count){
@@ -238,7 +238,7 @@ $(function() {
       });
       $(total).append(el.getSlideCount());
     };
-    var slider1 = new SliderInit('.slider','.slide-counter','.slide-counter span');
+    var slider1 = new SliderInit('.slider1','.slide-counter1','.slide-counter1 span');
     var slider2 = new SliderInit('.slider2','.slide-counter2','.slide-counter2 span');
 
 
@@ -298,9 +298,9 @@ $(function() {
 
     // slider1の設定（フェード）
     var sliderModalSet1 = {
-      el: '.sliderModal',
-      sliderModaleEl: '.slider li a',
-      sliderModaleWrap: '.sliderModalWrap',
+      el: '.sliderModal1',
+      sliderModaleEl: '.slider1 li a',
+      sliderModaleWrap: '.sliderModalWrap1',
       mode: 'fade',
       speed: 400
     }
@@ -314,11 +314,14 @@ $(function() {
       speed: 500
     }
 
-    // slider1をインスタンス生成
     var sliderModal1 = new SliderModalInit(sliderModalSet1);
-
-    // slider2をインスタンス生成
     var sliderModal2 = new SliderModalInit(sliderModalSet2);
+
+
+
+
+
+
 
 });
 
