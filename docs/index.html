@@ -103,6 +103,19 @@
   z-index: 100 !important;
 }
 
+
+/* 実装に不要なcss
+--------------------------- */
+.subTitle {
+  max-width: 900px;
+  margin: 35px auto 15px;
+  padding: 15px 0 15px 20px;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: bold;
+  border-left: 7px solid #008FA8;
+}
+
 </style>
 </head>
 
@@ -112,6 +125,10 @@
   <div id="js-sliderModalBk"></div><!-- sliderModalBk -->
 
 
+  <!-- ///////////////////////////////////////////////////////////////// -->
+
+  <h2 class="subTitle">スライダー × モーダル（fade）</h2>
+
   <!-- slider 1 -->
   <div class="sliderWrap">
     <ul class="slider">
@@ -119,7 +136,7 @@
       <li><a href="#slider2"><img src="img/02.jpg"></a></li>
       <li><a href="#slider3"><img src="img/03.jpg"></a></li>
     </ul>
-    <div class="slide-counter slide-total"><span></span> / </div>
+    <div class="slide-counter"><span></span> / </div>
   </div><!-- sliderWrap -->
 
   <div class="sliderModalWrap">
@@ -146,7 +163,10 @@
   </div><!-- sliderModalWrap -->
 
 
+  <!-- ///////////////////////////////////////////////////////////////// -->
 
+
+  <h2 class="subTitle">スライダー × モーダル（slide）</h2>
 
   <!-- slider 2 -->
   <div class="sliderWrap">
@@ -156,7 +176,7 @@
       <li><a href="#slider3"><img src="img/03.jpg"></a></li>
       <li><a href="#slider4"><img src="img/03.jpg"></a></li>
     </ul>
-    <div class="slide-counter2 slide-total2"><span></span> / </div>
+    <div class="slide-counter2"><span></span> / </div>
   </div><!-- sliderWrap -->
 
   <div class="sliderModalWrap2">
@@ -188,6 +208,9 @@
     </ul>
   </div><!-- sliderModalWrap -->
 
+  <!-- ///////////////////////////////////////////////////////////////// -->
+
+
 <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.bxslider.js"></script>
 <script type="text/javascript">
@@ -196,69 +219,63 @@
 $(function() {
 
     // slider設定
-    var SliderInit = function(){
-      SliderInit.prototype.inheritance = function(el,total,count){
-        var el = $(el).bxSlider({
-          auto: true,
-          slideWidth: 300,
-          slideMargin: 15,
-          maxSlides: 3,
-        	minSlides: 3,
-        	moveSlides:1,
-          // prevText: '', //前へのテキスト
-          // nextText: '', //次へのテキスト
-          onSliderLoad: function(currentIndex) {
-            $(count).text(currentIndex + 1);
-          },
-          onSlideBefore: function($slideElement, oldIndex, newIndex) {
-            $(count).text(newIndex + 1);
-          }
-        });
-        $(total).append(el.getSlideCount());
-      };
+    var SliderInit = function(el,total,count){
+      var el = $(el).bxSlider({
+        auto: true,
+        slideWidth: 300,
+        slideMargin: 15,
+        maxSlides: 3,
+      	minSlides: 3,
+      	moveSlides:1,
+        prevText: '', //前へのテキスト
+        nextText: '', //次へのテキスト
+        onSliderLoad: function(currentIndex) {
+          $(count).text(currentIndex + 1);
+        },
+        onSlideBefore: function(slideElement, oldIndex, newIndex) {
+          $(count).text(newIndex + 1);
+        }
+      });
+      $(total).append(el.getSlideCount());
     };
-    var slider1 = new SliderInit();
-    slider1.inheritance('.slider','.slide-counter','.slide-counter span');
-
-    var slider2 = new SliderInit();
-    slider2.inheritance('.slider2','.slide-counter2','.slide-counter2 span');
+    var slider1 = new SliderInit('.slider','.slide-counter','.slide-counter span');
+    var slider2 = new SliderInit('.slider2','.slide-counter2','.slide-counter2 span');
 
 
+    // ------------------------------------------------------------------------------------------
 
 
     // Modal内のslider設定
-    var SliderModalInit = function(){
-      SliderModalInit.prototype.inheritance = function(sliderModalSet){
-        var el = $(sliderModalSet.el).bxSlider({
-          auto: false,
+    var SliderModalInit = function(sliderModalSet){
+      var el = $(sliderModalSet.el).bxSlider({
+        auto: false,
+        mode: sliderModalSet.mode,
+        slideWidth: 300
+      });
+      var $sliderEl = $(sliderModalSet.sliderModaleEl);
+      var $sliderModalBk = $('#js-sliderModalBk');
+      var $sliderModal = $(sliderModalSet.sliderModaleWrap);
+      var $winHWidth = $(window).width();
+      var $docHeight = $(document).height();
+
+      $sliderEl.on('click', function(){
+        var $slideIndexSelected = parseInt($(this).prop('href').substr(-1,1)) - 1;
+        $sliderModalBk.fadeIn();
+        $sliderModal.fadeIn();
+        el.reloadSlider({
           mode: sliderModalSet.mode,
-          slideWidth: 300
+          speed: sliderModalSet.speed,
+          pager: false,
+          touchEnabled: false,
+          prevText: '', //前へのテキスト
+          nextText: '', //次へのテキスト
+          startSlide: $slideIndexSelected
         });
-        var $sliderEl = $(sliderModalSet.sliderModaleEl);
-        var $sliderModalBk = $('#js-sliderModalBk');
-        var $sliderModal = $(sliderModalSet.sliderModaleWrap);
-        var $winHWidth = $(window).width();
-        var $docHeight = $(document).height();
-
-        $sliderEl.on('click', function(){
-          var $slideIndexSelected = parseInt($(this).prop('href').substr(-1,1)) - 1;
-          $sliderModalBk.fadeIn();
-          $sliderModal.fadeIn();
-          el.reloadSlider({
-            mode: sliderModalSet.mode,
-            speed: sliderModalSet.speed,
-            pager: false,
-            touchEnabled: false,
-            startSlide: $slideIndexSelected
-          });
-          // modalの背景設定
-          var sample = $sliderModalBk.css({
-            width: $winHWidth,
-            height: $docHeight
-          });
-          return false;
+        // modalの背景設定
+        $sliderModalBk.css({
+          width: $winHWidth,
+          height: $docHeight
         });
-
         $(window).on('load resize', function(){
           var $winHWidth = $(window).width();
           var $docHeight = $(document).height();
@@ -267,14 +284,14 @@ $(function() {
             height: $docHeight
           });
         });
-
-        $sliderModalBk.on('click', function(){
-          var fadeOutSpeed = 500;
-          $sliderModal.fadeOut(function(){
-            $sliderModalBk.fadeOut(fadeOutSpeed,'swing');
-          });
+        return false;
+      });
+      $sliderModalBk.on('click', function(){
+        var fadeOutSpeed = 500;
+        $sliderModal.fadeOut(function(){
+          $sliderModalBk.fadeOut(fadeOutSpeed,'swing');
         });
-      }
+      });
     };
 
     // slider1の設定（フェード）
@@ -283,7 +300,7 @@ $(function() {
       sliderModaleEl: '.slider li a',
       sliderModaleWrap: '.sliderModalWrap',
       mode: 'fade',
-      speed: 400,
+      speed: 400
     }
 
     // slider2の設定（スライド）
@@ -292,16 +309,14 @@ $(function() {
       sliderModaleEl: '.slider2 li a',
       sliderModaleWrap: '.sliderModalWrap2',
       mode: 'horizontal',
-      speed: 500,
+      speed: 500
     }
 
     // slider1をインスタンス生成
-    var sliderModal1 = new SliderModalInit();
-    sliderModal1.inheritance(sliderModalSet1);
+    var sliderModal1 = new SliderModalInit(sliderModalSet1);
 
     // slider2をインスタンス生成
-    var sliderModal2 = new SliderModalInit();
-    sliderModal2.inheritance(sliderModalSet2);
+    var sliderModal2 = new SliderModalInit(sliderModalSet2);
 
 });
 
