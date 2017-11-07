@@ -260,7 +260,22 @@ $(function() {
 
       $sliderEl.on('click', function(){
         var $slideIndexSelected = parseInt($(this).prop('href').substr(-1,1)) - 1;
-        $sliderModalBk.fadeIn();
+        var $winHWidth = $(window).width();
+        var $docHeight = $(document).height();
+
+        // modalの背景設定
+        $sliderModalBk.css({
+          width: $winHWidth,
+          height: $docHeight
+        }).fadeIn();
+        $(window).on('load resize', function(){
+          var $winHWidth = $(window).width();
+          var $docHeight = $(document).height();
+          $sliderModalBk.css({
+            width: $winHWidth,
+            height: $docHeight
+          });
+        });
         $sliderModal.fadeIn();
         el.reloadSlider({
           mode: sliderModalSet.mode,
@@ -270,19 +285,6 @@ $(function() {
           prevText: '', //前へのテキスト
           nextText: '', //次へのテキスト
           startSlide: $slideIndexSelected
-        });
-        // modalの背景設定
-        $sliderModalBk.css({
-          width: $winHWidth,
-          height: $docHeight
-        });
-        $(window).on('load resize', function(){
-          var $winHWidth = $(window).width();
-          var $docHeight = $(document).height();
-          $sliderModalBk.css({
-            width: $winHWidth,
-            height: $docHeight
-          });
         });
         return false;
       });
