@@ -40,6 +40,9 @@
   position: absolute;
   left: 100px;
   bottom: -30px;
+  color: #999;
+  font-size: 14px;
+  font-weight: bold;
 }
 /* モーダル
 --------------------------- */
@@ -125,7 +128,7 @@
 
   <!-- ///////////////////////////////////////////////////////////////// -->
 
-  <div class="subTitle">スライダー × モーダル（fade）</div>
+  <div class="subTitle">スライダー × モーダル（fade） - activeは左側</div>
 
   <!-- slider 1 -->
   <div class="sliderWrap">
@@ -164,7 +167,7 @@
   <!-- ///////////////////////////////////////////////////////////////// -->
 
 
-  <div class="subTitle">スライダー × モーダル（slide）</div>
+  <div class="subTitle">スライダー × モーダル（slide） - activeは左側</div>
 
   <!-- slider 2 -->
   <div class="sliderWrap">
@@ -223,7 +226,7 @@ $(function() {
       var el = $(el).bxSlider({
         auto: true,
         slideWidth: 300,
-        slideMargin: 15,
+        slideMargin: 40,
         maxSlides: 3,
       	minSlides: 3,
       	moveSlides:1,
